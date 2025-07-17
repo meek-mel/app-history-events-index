@@ -257,15 +257,15 @@
           <p><strong>Considerations:</strong></p>
           <ul>
             <li>Merchants are not billed until you (the developer) activate the charge, even if the merchant has accepted it.</li>
-            <li>If not activated promptly, the charge may expire and the merchant will not be billed.</li>
-            <li>You can issue full or partial refunds for activated charges via the Partner Dashboard, subject to Shopify's refund policies.</li>
+            <li>If the charge is not activated within 48 hours, the charge will automatically expire and cannot be billed.</li>
+            <li>You can issue full or partial refunds for activated charges via the Partner Dashboard, subject to your app's refund policies. If the charge is on an unpaid ('Pending') invoice, it can be reversed by issuing an <code>ApplicationCredit</code>.</li>
             <li>Activation is required for the charge to appear on the merchant's invoice and for you to receive payment.</li>
           </ul>
 
           <p><strong>For more details, see the <code>Shopify.dev</code> docs:</strong></p>
             <ul>
-                <li><a href="https://shopify.dev/apps/launch/billing/support-one-time-purchases" target="_blank">Shopify App Billing: One-time charges</a></li>
-                <li><a href="https://shopify.dev/apps/launch/distribution/track-app-usage#application-charge-events" target="_blank">App History and Event Definitions</a></li>
+                <li><a href="https://shopify.dev/apps/launch/billing/support-one-time-purchases" target="_blank">Support one-time app purchases</a></li>
+                <li><a href="https://shopify.dev/apps/launch/distribution/track-app-usage#application-charge-events" target="_blank">Application charge events</a></li>
                 <li><a href="https://shopify.dev/docs/api/admin-rest/latest/resources/applicationcharge" target="_blank">ApplicationCharge API reference</a></li>
             </ul>
         </div>
@@ -280,7 +280,7 @@
             <li>Your app offers a premium feature for a one-time fee.</li>
             <li>The merchant clicks 'Buy' in your app.</li>
             <li>Your app creates an <code>ApplicationCharge</code> and redirects the merchant to Shopify's approval page.</li>
-            <li>The merchant reviews the charge and clicks "Decline."</li>
+            <li>The merchant reviews the charge and clicks 'Decline.'</li>
             <li>The charge is marked as declined, and this event is logged in your app's <strong>App history</strong> as <span class='event-pill event-charge context-ref' style='background:#ededed; color:#222; display:inline-flex;'>Charge declined</span>.</li>
             <li>The merchant is not billed, and the feature is not enabled.</li>
           </ol>
@@ -288,14 +288,13 @@
           <p><strong>Considerations:</strong></p>
           <ul>
             <li>Declined charges are never billed, and no invoice is generated for the merchant.</li>
-            <li>Your app should handle this event gracefully, such as by not enabling the paid feature or by displaying a message to the merchant.</li>
-            <li>It's best practice to provide clear feedback to the merchant when a charge is declined, and optionally offer a way to try again or contact support.</li>
+            <li>It's best practice to provide clear feedback to the merchant when a charge is declined, and optionally, offer a way to try again or contact your support team.</li>
             <li>The declined charge cannot be reactivated. If the merchant changes their mind, you must create a new charge.</li>
           </ul>
 
           <p><strong>For more details, see the <code>Shopify.dev</code> docs:</strong></p>
             <ul>
-                <li><a href="https://shopify.dev/apps/launch/distribution/track-app-usage#application-charge-events" target="_blank">Shopify Dev Docs: Application charge events</a></li>
+                <li><a href="https://shopify.dev/apps/launch/distribution/track-app-usage#application-charge-events" target="_blank">Application charge events</a></li>
                 <li><a href="https://shopify.dev/docs/api/admin-rest/latest/resources/applicationcharge" target="_blank">ApplicationCharge API reference</a></li>
                 <li><a href="https://shopify.dev/apps/launch/billing/view-charges-earnings" target="_blank">View charges and earnings</a></li>
             </ul>
@@ -304,7 +303,7 @@
       charge_expired: `
         <div style="line-height:1.7;">
           <p><strong>What does it mean?</strong></p>
-          <p>The <code>ApplicationCharge</code> has <strong>expired</strong>. This means your app presented a one-time app charge to the merchant, but the merchant took no action (neither accepted nor declined) within 48 hours. Shopify automatically marks the charge as expired, and it cannot be accepted or billed.</p>
+          <p>The <code>ApplicationCharge</code> has expired. This means your app presented a one-time app charge to the merchant, but the merchant took no action (neither accepted nor declined) within 48 hours. Shopify automatically marks the charge as expired, and it cannot be accepted or billed.</p>
 
           <p><strong>Example scenario:</strong></p>
           <ol>
@@ -319,14 +318,13 @@
           <p><strong>Considerations:</strong></p>
           <ul>
             <li>Expired charges are never billed, and no invoice is generated for the merchant.</li>
-            <li>Your app should handle this event gracefully, such as by not enabling the paid feature or by displaying a message to the merchant.</li>
-            <li>It's best practice to provide clear feedback to the merchant when a charge expires, and optionally offer a way to try again or contact support.</li>
+            <li>It's best practice to provide clear feedback to the merchant when a charge expires, and optionally, offer a way to try again or contact your support team.</li>
             <li>The expired charge cannot be reactivated. If the merchant changes their mind, you must create a new charge.</li>
           </ul>
 
           <p><strong>For more details, see the <code>Shopify.dev</code> docs:</strong></p>
             <ul>
-                <li><a href="https://shopify.dev/apps/launch/distribution/track-app-usage#application-charge-events" target="_blank">Shopify Dev Docs: Application charge events</a></li>
+                <li><a href="https://shopify.dev/apps/launch/distribution/track-app-usage#application-charge-events" target="_blank">Application charge events</a></li>
                 <li><a href="https://shopify.dev/docs/api/admin-rest/latest/resources/applicationcharge" target="_blank">ApplicationCharge API reference</a></li>
                 <li><a href="https://shopify.dev/apps/launch/billing/view-charges-earnings" target="_blank">View charges and earnings</a></li>
             </ul>
@@ -353,7 +351,7 @@
             <li>Only Partner account owners or team members with the <code>Manage credits and refunds</code> permission can issue credits.</li>
             <li>Credits are negative revenue for you and will appear as deductions in your payout reports only if the original charge has already been paid. If the credit is used to reverse an unpaid ('Pending') charge, it offsets the charge before payout and no deduction appears in your payout report.</li>
             <li>If a credit fails (e.g., due to insufficient funds), it will not be applied, and the merchant will not receive the credit.</li>
-            <li>If a credit (applied to reverse an unpaid app charge) is not automatically applied to the merchant’s unpaid (Pending') invoice containing the app charge, advise the merchant to contact Shopify Support for assistance.</li>
+            <li>If a credit (applied to reverse an unpaid app charge) is not automatically applied to the merchant’s unpaid (Pending') invoice containing the app charge, advise the merchant to [contact Shopify Support](https://help.shopify.com/en/) for assistance.</li>
           </ul>
 
           <p><strong>For more details, see the <code>Shopify.dev</code> docs:</strong></p>
@@ -417,7 +415,7 @@
             <li><span class='event-pill event-credit context-ref' style='background:#ededed; color:#222; display:inline-flex;'>Credit pending</span> is a temporary state and should resolve to either <span class='event-pill event-credit context-ref' style='background:#b2f0d4; color:#222; display:inline-flex;'>Credit applied</span> or <span class='event-pill event-credit context-ref' style='background:#FFB3A7; color:#222; display:inline-flex;'>Credit failed</span>.</li>
             <li>Partners should monitor pending credits and follow up if they remain in this state for an extended period.</li>
             <li>Merchants are not able to use the credit until it is successfully applied.</li>
-            <li>Common reasons for a credit to remain pending include insufficient pending payouts, exceeding allowed limits, or system/validation delays.</li>
+            <li>Common reasons for a credit to remain pending include insufficient pending payouts, exceeding allowed limits, or other system or validation delays.</li>
           </ul>
 
           <p><strong>For more details, see the <code>Shopify.dev</code> docs:</strong></p>
@@ -437,7 +435,7 @@
           <p><strong>Example scenario:</strong></p>
           <ol>
             <li>A merchant discovers your app in the <a href="https://apps.shopify.com/" target="_blank">Shopify App Store</a> or via a direct install link.</li>
-            <li>They click "Install" and are redirected to the OAuth grant screen.</li>
+            <li>They click 'Install' and are redirected to the OAuth grant screen.</li>
             <li>The merchant reviews and approves the requested permissions.</li>
             <li>Shopify installs the app on the merchant's store and records the <span class='event-pill event-install context-ref' style='background:#b2f0d4; color:#222; display:inline-flex;'>Installed</span> event in your <strong>App history</strong> section.</li>
             <li>The app can now interact with the store via the granted API scopes.</li>
@@ -477,7 +475,6 @@
             <li><span class='event-pill event-install context-ref' style='background:#FFED7B; color:#222; display:inline-flex;'>Uninstalled</span> events are tracked separately from <span class='event-pill event-install context-ref' style='background:#b2f0d4; color:#222; display:inline-flex;'>Installed</span> events and are important for understanding app churn and retention.</li>
             <li>If the app is reinstalled, a new <span class='event-pill event-install context-ref' style='background:#b2f0d4; color:#222; display:inline-flex;'>Installed</span> event will be recorded.</li>
             <li>For analytics, uninstalls can be segmented by shop type, uninstall source, and time to uninstall (e.g., same day, 1-14 days, etc.).</li>
-            <li>To access detailed, row-level install event data (including shop type, uninstall source, or time to uninstall), you will need to <a href="https://shopify.dev/docs/apps/launch/distribution/track-app-usage#export-active-install-data" target="_blank">export the data as a CSV</a> from your Partner Dashboard.</li>
           </ul>
 
           <p><strong>For more details, see the <code>Shopify.dev</code> docs:</strong></p>
@@ -548,7 +545,7 @@
                 <li><a href="https://shopify.dev/apps/launch/distribution/track-app-usage#recurring-charge-events" target="_blank">Recurring charge events</a></li>
                 <li><a href="https://shopify.dev/apps/launch/billing/subscription-billing" target="_blank">About subscription billing</a></li>
                 <li><a href="https://shopify.dev/apps/launch/billing/view-charges-earnings" target="_blank">View charges and earnings</a></li>
-                <li><a href="https://shopify.dev/docs/api/admin-graphql/2025-04/mutations/appSubscriptionCancel" target="_blank">AppSubscriptionCancel mutation (API reference)</a></li>
+                <li><a href="https://shopify.dev/docs/api/admin-graphql/2025-04/mutations/appSubscriptionCancel" target="_blank">AppSubscriptionCancel mutation API reference</a></li>
             </ul>
         </div>
       `,
@@ -570,8 +567,7 @@
           <p><strong>Considerations:</strong></p>
           <ul>
             <li>Declined recurring charges are never billed, and no invoice is generated for the merchant.</li>
-            <li>Your app should handle this event gracefully, such as by not enabling paid features or by displaying a message to the merchant.</li>
-            <li>It's best practice to provide clear feedback to the merchant when a recurring charge is declined, and optionally offer a way to try again or contact support.</li>
+            <li>It's best practice to provide clear feedback to the merchant when a recurring charge is declined, and optionally, offer a way to try again or contact your support team.</li>
             <li>The declined recurring charge cannot be reactivated. If the merchant changes their mind, you must create a new subscription charge.</li>
           </ul>
 
@@ -600,8 +596,7 @@
           <p><strong>Considerations:</strong></p>
           <ul>
             <li>Expired recurring charges are never billed, and no invoice is generated for the merchant.</li>
-            <li>Your app should handle this event gracefully, such as by not enabling the paid feature or by displaying a message to the merchant.</li>
-            <li>It's best practice to provide clear feedback to the merchant when a recurring charge expires, and optionally offer a way to try again or contact support.</li>
+            <li>It's best practice to provide clear feedback to the merchant when a recurring charge expires, and optionally, offer a way to try again or contact your support team.</li>
             <li>The expired recurring charge cannot be reactivated. If the merchant changes their mind, you must create a new charge.</li>
           </ul>
 
