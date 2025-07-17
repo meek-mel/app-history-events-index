@@ -496,7 +496,7 @@
             <li>Your app offers a paid subscription (e.g., $10/month) via a <code>RecurringApplicationCharge</code>.</li>
             <li>The merchant installs your app and is prompted to approve the subscription charge.</li>
             <li>The merchant accepts the charge on Shopify's approval page.</li>
-            <li>The charge is now in the 'accepted' state.</li>
+            <li>The charge is now in the 'accepted' state and the <span class='event-pill event-recurring context-ref' style='background:#b2f0d4; color:#222; display:inline-flex;'>Subscription charge accepted</span> event is logged in your app's <strong>App history</strong> section.</li>
             <li>Your app receives a webhook or API callback, then you (the developer) must activate the recurring charge. This can be done automatically (via the REST Admin API), or manually after performing any necessary checks. The recurring charge will not be billed until you activate it.</li>
             <li>Once the recurring charge is activated, Shopify will bill the merchant on their next invoice.</li>
           </ol>
